@@ -1,0 +1,163 @@
+{% load static %}
+{% load i18n %}
+{% load index_ing %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'caisse/bootstrapicons/bootstrap-icons.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'caisse/css/bootstrap.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'caisse/sale-details.css'%}">
+    <title>Vente #{{thisSale.id}}</title>
+</head>
+<body>
+    <div id="main-container" class="main-container">
+        <div class="cont">
+            <p class="sale-id">Vente #{{thisSale.id}}</p>
+            <p class="sale-date">
+                {% language 'fr' %}
+                {{thisSale.saleDate | date}}
+                {% endlanguage %}
+            </p>
+            <div class="sale-prods">
+                {% for prod in saleProds %}
+                    <div class="prod">
+                        <p class="prd-id">#{{prod.id}}</p>
+                        <p class="prd-name">{{prod.productname}}</p>
+                        <p class="prd-price">{{prod.price}}DA</p>
+                        <p class="prd-quant">X{{thisSale.saleQuantityStr|index_ing:forloop.counter0}}</p>
+                    </div>
+                    
+                {% endfor %}
+            </div>
+            <button id="edit-sale" onclick="editPopUp()"> Editer</button>
+        </div>
+        <dialog id="edit-cont" class="edit-cont" open="">
+            <div class="close">x</div>
+            <p class="sale-id">Vente #{{thisSale.id}}</p>
+            <p class="sale-date">
+                {% language 'fr' %}
+                {{thisSale.saleDate | date}}
+                {% endlanguage %}
+            </p>
+            <div class="sale-prods">
+                <form  method="post" id="edit_form">
+                    {% csrf_token %}
+                    
+                {% for prod in saleProds %}
+                    <input type="text" name={{prod.id}} value={{thisSale.saleQuantityStr|index_ing:forloop.counter0}} id=inpt{{prod.id}} hidden>
+                    <input type="text" name=saleId value={{thisSale.id}} hidden>
+                    <div id=prod{{prod.id}} class="prod">
+                        <p class="prd-id">#{{prod.id}}</p>
+                        <p class="prd-name">{{prod.productname}}</p>
+                        <p class="prd-price">{{prod.price}}DA</p>
+                        {% if thisSale.saleQuantityStr|index_ing:forloop.counter0 == 1%}
+                            <p id=qnt{{prod.id}} class="prd-quant"></p>
+                        {% endif %}                            
+                        <p id=qnt{{prod.id}} class="prd-quant">X{{thisSale.saleQuantityStr|index_ing:forloop.counter0}}</p>
+                        <div class="icons">
+                            <i id=plus{{prod.id}} class="bi-plus-circle-fill text-success" onclick="plusicon(this.id)"></i>
+                            <i id=minus{{prod.id}} class="bi-dash-circle-fill text-dark" onclick="minusicon(this.id)"></i> 
+                            <i id=delete{{prod.id}} class="bi-trash-fill text-danger" onclick="deleteicon(this.id)"></i>
+                        </div>
+                    </div>
+                    
+                {% endfor %}
+                    <button  class="btn btn-warning" id="editBtn" type="submit" name="edit">Confirmer</button>
+                </form>
+            </div> 
+           
+        </dialog>
+    </div>
+</body>
+<script>
+    function editPopUp(){
+        editCont = document.getElementById("edit-cont");
+        closeBtn = document.getElementsByClassName("close")[0];
+        console.log(closeBtn);
+        editCont.style.display = "block";
+
+        closeBtn.onclick =function(){
+            editCont.style.display = "none";
+        }
+    }
+    function plusicon(pId){
+        pId = pId.split("plus")[1];
+        qnt = document.getElementById("qnt"+pId).childNodes[0].textContent;
+        qnt = qnt.split("X")[1];
+        document.getElementById("qnt"+pId).childNodes[0].nodeValue = "X"+(parseInt(qnt)+1);
+
+        document.getElementById("inpt"+pId).attributes[2].nodeValue= parseInt(qnt)+1;
+    }
+    
+    function minusicon(pId){
+        pId = pId.split("minus")[1];
+        qnt = document.getElementById("qnt"+pId).childNodes[0].textContent;
+        if(qnt === "X1"){
+            if (confirm("Voullez vous vraiment supprimer ce produit ?") == true){
+            document.getElementById("prod"+pId).remove();
+            document.getElementById("inpt"+pId).attributes[2].nodeValue= -1;
+            }
+        }else{
+            qnt = qnt.split("X")[1];
+            document.getElementById("qnt"+pId).childNodes[0].nodeValue = "X"+(parseInt(qnt)-1);
+            document.getElementById("inpt"+pId).attributes[2].nodeValue= parseInt(qnt)-1;
+        }
+    }
+    function deleteicon(pId){
+        pId = pId.split("delete")[1];
+        if (confirm("Voullez vous vraiment supprimer ce produit ?") == true){
+            document.getElementById("prod"+pId).remove();
+            document.getElementById("inpt"+pId).attributes[2].nodeValue= -1; 
+        }
+    }
+</script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>	
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+<form  method="post" id="edit_form">
+    {% csrf_token %}
+    
+{% for prod in saleProds %}
+    <input type="text" name={{prod.id}} value={{thisSale.saleQuantityStr|index_ing:forloop.counter0}} id=inpt{{prod.id}} hidden>
+    <div id=prod{{prod.id}} class="prod">
+        <p class="prd-id">#{{prod.id}}</p>
+        <p class="prd-name">{{prod.productname}}</p>
+        <p class="prd-price">{{prod.price}}DA</p>
+        {% if thisSale.saleQuantityStr|index_ing:forloop.counter0 == 1%}
+            <p id=qnt{{prod.id}} class="prd-quant"></p>
+        {% endif %}                            
+        <p id=qnt{{prod.id}} class="prd-quant">X{{thisSale.saleQuantityStr|index_ing:forloop.counter0}}</p>
+        <div class="icons">
+            <i id=plus{{prod.id}} class="bi-plus-circle-fill text-success" onclick="plusicon(this.id)"></i>
+            <i id=minus{{prod.id}} class="bi-dash-circle-fill text-dark" onclick="minusicon(this.id)"></i> 
+            <i id=delete{{prod.id}} class="bi-trash-fill text-danger" onclick="deleteicon(this.id)"></i>
+        </div>
+    </div>
+    
+{% endfor %}
+    <button  class="btn btn-warning" id="editBtn" type="submit" name="edit">Confirmer</button>
+</form> -->

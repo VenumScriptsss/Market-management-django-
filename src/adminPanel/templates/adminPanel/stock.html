@@ -1,0 +1,122 @@
+{% extends 'adminPanel/adminbase.html' %}
+
+{% block style %}
+
+	.text-right{
+		margin-top:20px;	
+	}
+  .table {
+    margin-top:35px
+  }
+  .input-group{
+    width:350px;
+    margin-bottom:10px;
+    left:50%;
+    transform: translate(-50%);
+  }
+  .th-button {
+    background-color: transparent;
+    border: none;
+    font-weight: bold;
+    color: #212529;
+  }
+  .header{
+    margin-bottom:20px;
+  }
+
+{% endblock style %}
+
+
+
+{% block title %}
+	Stock
+{% endblock title %}
+
+{% block backicon %}
+  <a  href="/admin-panel" class="backicon"><img class="bi bi-arrow-left-circle-fill" src="/static/adminPanel/bootstrapicons/arrow-left-circle-fill.svg" ></img></a>
+{% endblock %}
+
+{% block content %}
+
+<div style="display:flex;justify-content:right;">  
+  <div class="text-right">
+    <a href="stock/add-categorie" class="add" style="margin-right:10px"><button class="btn btn-success">Ajouter Categorie</button></a>
+  </div>
+
+  <div class="text-right">
+    <a href="stock/add-product" class="add"><button class="btn btn-success">Ajouter Produit</button></a>
+  </div>
+</div>
+
+<form method="post">{%csrf_token%}
+  <div class="input-group">
+    <input type="search" class="form-control rounded" name="searchprd" placeholder="Search" aria-label="Search"
+      aria-describedby="search-addon"/>
+    <button type="submit" class="btn btn-outline-primary" name="search">search</button>
+  </div>
+  {% if search_title  %}
+  <div style="display:flex;">  
+    <h4 style="padding-left:10px;font-weight:bold;">Recherch Pour '{{search_title}}'</h4>
+    <button type="submit" class="btn btn-link" name="reset" style="margin-top:-5px;">annuler </button>
+  </div>
+  {% endif %}
+  
+
+
+</form>
+<table class="table table-hover table-striped">
+  <thead>
+    <tr>
+      <th scope="col"><form method="post">{%csrf_token%}<button class="th-button" type="submit" name="orderby-id">#⬍</button></form></th>
+      <th scope="col">produit</th>
+      <th scope="col">categorie</th>
+      <th scope="col"><form method="post">{%csrf_token%}<button class="th-button" type="submit" name="orderby-datedelv">date arrivé⬍</button></form></th>
+      <th scope="col"><form method="post">{%csrf_token%}<button class="th-button" type="submit" name="orderby-quantity">quantité⬍</button></form></th>
+      <th scope="col"><form method="post">{%csrf_token%}<button class="th-button" type="submit" name="orderby-date-ex">date pirimé⬍</button></form></th>
+      <th scope="col"><form method="post">{%csrf_token%}<button class="th-button" type="submit" name="orderby-price">prix⬍</button></form></th>
+      <th scope="col"><form method="post">{%csrf_token%}<button class="th-button" type="submit" name="orderby-sold">sold⬍</button></form></th>
+      <th scope="col">livrer par</th>
+    </tr>
+  </thead>
+  {% for product in products %}
+
+  <tbody>
+    <tr>
+      <th scope="row">{{product.id}}</th>
+      <td>{{product.productname}}</td>
+      <td>{{product.category}}</td>
+      <td>{{product.date_delivered|date:'Y-m-d'}}</td>
+      <td>{{product.quantity}}</td>
+      <td>{{product.date_ex|date:'Y-m-d'}}</td>
+      <td>
+        {% if product.price == -1 or product.price == 0 %}
+          Prix Non Saiser
+        {% elif product.sold %}
+           {% for sold in solds %}
+            {% if sold.sold_productid == product.id %}
+              {{product.price}}DA ({{sold.sold_price}}DA prix sold)
+            {% endif %}
+           {% endfor %}
+        {% else %}
+          {{product.price}}DA
+        {% endif %}
+        
+      </td>
+      <td class="product-sold">
+        {% if product.sold %}
+          Solder
+        {% else %}
+          Non Solder
+        {% endif %}
+      </td>
+      <td>{{product.suplier}}</td>
+      <td><form method="post" action="stock/edit-product">{% csrf_token %}
+          <button class="btn btn-warning" type="submit" name="edit" value={{product.id}}>Edit</button>
+          </form>
+      </td>
+    </tr>
+    
+  </tbody>
+  {% endfor %}
+</table>
+{% endblock %}

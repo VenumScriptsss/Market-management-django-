@@ -1,0 +1,241 @@
+{% extends 'adminPanel/adminbase.html' %}
+	
+
+{% block title %}
+	prix
+{% endblock%}
+
+{% block backicon %}
+  <a  href="/admin-panel" class="backicon"><img class="bi bi-arrow-left-circle-fill" src="/static/adminPanel/bootstrapicons/arrow-left-circle-fill.svg"></img></a>
+{% endblock %}
+
+{% block style %}
+	a{
+		text-decoration: none;
+	}
+	a:hover{
+		text-decoration: none;
+		color: transparent;
+	}
+	.container{
+		display:flex;
+		margin-top:100px;
+		justify-content: center;
+		padding:0;
+	}
+	.catgs{
+		border:none;
+		padding:0;
+		background-color:#ffa500;
+		width:110px;
+		height:110px;
+		border-radius:5px;
+		text-align: center;
+		font-weight:bold;
+		margin-right:50px;
+	}
+	.catgs p{
+		padding:0;
+		margin:0;
+		color: black;
+	}
+  	.input-group{
+	    padding:0;
+  		margin: 50px 0 0 0;
+	    width:350px;
+	    margin-bottom:50px;
+	    left:50%;
+	    transform: translate(-60%);
+
+  	}
+  	.cat-title{
+  		font-weight: bold;
+  		color: black;
+  		padding: 10px;
+  		margin: 50px 0 -90px 0;
+  	}
+
+  .th-button {
+    background-color: transparent;
+    border: none;
+    font-weight: bold;
+    color: #212529;
+  }
+  .fas{
+  	margin-top:5px;
+  	color: black;
+  	font-size:1.5rem;
+  }
+  .fas:hover{
+  	color:black;
+  	font-size: 1.5rem;
+  	padding:0;
+  }
+  .catgs img{
+  	height:2rem;
+  	width: 2rem;
+  	margin-top:2px;
+  	padding:0;
+  }
+{% endblock %}
+
+{% block content %}
+
+<p class="cat-title">Categories:</p>
+	<div class="container">
+
+	<form method="post" action="prix/prix-categories">{%csrf_token%}
+		<button type="submit" name="cat-boissants" class="catgs">
+			<p>Boissants</p>
+			<img class="bi" src="/static/adminPanel/bootstrapicons/cup-straw.svg"></img>
+		</button>
+	</form>
+
+	<form method="post" action="prix/prix-categories">{%csrf_token%}
+		<button class="catgs" type="submit" name="cat-nouriture">
+			<p>Nouriture</p>
+			<i class='fas fa-apple-alt' style="font-size:1.7rem;"></i>
+		</button>
+	</form>	
+	<form method="post" action="prix/prix-categories">{%csrf_token%}	
+		<button class="catgs" type="submit" name="cat-produits">
+			<p>Produits</p>
+			<i class="fas fa-pump-soap" style="font-size: 2rem;"></i>
+		</button>
+	</form>
+	<form method="post" action="prix/prix-categories">{%csrf_token%}	
+		<button class="catgs" type="submit" name="cat-autre">
+			<p>Autre</p>
+			<img  src="/static/adminPanel/bootstrapicons/exclamation-circle.svg" style="height:1.7erm;width:1.7rem;"></i>
+		</button>
+	</form>	
+	</div>
+
+	<form method="post">{%csrf_token%}
+
+	  <div class="input-group">
+	    <input type="search" class="form-control rounded" name="searchprd" placeholder="Search" aria-label="Search"
+	      aria-describedby="search-addon"/>
+	    <button type="submit" class="btn btn-outline-primary" name="search">search</button>
+	  </div>
+	  {% if search_title  %}
+	  <div style="display:flex;">  
+	    <h4 style="padding-left:10px;font-weight:bold;">Recherch Pour '{{search_title}}'</h4>  
+		  <button type="submit" class="btn btn-link" name="reset" style="margin-top:-5px;">annuler </button>
+		</div>  
+	  {% endif %}
+
+  </form>
+<table class="table table-hover table-striped" id="table">
+  <thead>
+    <tr>
+      <th scope="col"><button class="th-button" type="submit" name="orderby-id" onclick="idSort()">#⬍</button></th>
+      <th scope="col">produit</th>
+      <th scope="col">categorie</th>
+      <th scope="col"><button class="th-button" type="submit" onclick="dateDelvSort()">date arrivé⬍</button></th>
+      <th scope="col"><button class="th-button" type="submit" onclick="dateExSort()">date primé⬍</button></th>
+      <th scope="col"><button class="th-button" type="submit" onclick="priceSort()">prix⬍</button></th>
+      <th scope="col"><button class="th-button" type="submit" onclick="soldSort()">sold⬍</button></th>
+    </tr>
+  </thead>
+  	{% for product in products %}
+
+  <tbody>
+    <tr>
+      <th scope="row"><p id="prod-id">{{product.id}}</p></th>
+      <td>{{product.productname}}</td>
+      <td>{{product.category}}</td>
+      <td id="prod-dateDelv"><p>{{product.date_delivered|date:'Y-m-d'}}</p></td>
+      <td><p id="prod-dateEx">{{product.date_ex|date:'Y-m-d'}}</p></td>
+      <td>
+      	{% if product.price == -1 or product.price == 0 %}
+          Prix Non Saiser
+        {% elif product.sold %}
+           {% for sold in solds %}
+            {% if sold.sold_productid == product.id %}
+              <p id="prod-price">{{product.price}}DA ({{sold.sold_price}}DA prix sold)</p>
+            {% endif %}
+           {% endfor %}
+        {% else %}
+          <p id="prod-price">{{product.price}}DA</p>
+        {% endif %}
+      	</td>
+      <td>
+      	{% if product.sold %}
+          <p style="padding:0;margin:0;color:green;" id="prod-sold">Solder</p>
+        {% else %}
+          <p style="padding:0;margin:0;color:red;" id="prod-sold">Non Solder</p>
+        {% endif %}
+      </td>
+      <td><form method="post" action="prix/prices-edit">{% csrf_token %}
+          <button class="btn btn-warning" type="submit" name="price-edit" value={{product.id}}>Editer</button>
+          </form>
+      </td>
+
+  		{% if not product.sold %}
+      <td>
+	      	<form method="post" action="prix/add-sold">{% csrf_token %}
+	          <button class="btn btn-success" type="submit" name="solding-product-id" value={{product.id}}>Solder</button>
+	        </form>
+	    </td>    
+		{% else %}
+     	<td>
+	      	<form method="post" action="prix/edit-sold">{% csrf_token %}
+	          <button class="btn btn-primary" type="submit" name="solding-product-id" value={{product.id}}>Editer Sold</button>
+	        </form>
+	    </td>
+		{% endif %}	
+      	
+      </td>
+
+    </tr>
+    
+  </tbody>
+	{% endfor %}
+</table>
+    <script>
+        function jsfunc(){
+        	alert("vouler vous vraiment areter le sold");
+            inpt = document.getElementById("cnf-sold-btn")
+               	inpt.click()
+		}
+    </script>
+    <script>
+    	function dateDelvSort(){
+    		/*id = document.getElementById('prod-id')*/
+    		dateDelv = document.querySelectorAll("[id='prod-dateDelv']");
+    		table = document.getElementById('table')
+    		rows = table.rows
+    		/*dateEx = document.getElementById('prod-dateEx')
+    		price = document.getElementById('prod-price')
+    		sold = document.getElementById('prod-sold')*/    
+
+  			//dateDelv3 = [new Date(rows[1].getElementsByTagName("TD")[2].textContent)];
+  			//console.log(dateDelv3)
+  			/*
+    		dateDelv2.sort((a,b)=>b-a);
+    		*/
+    		rows2 = [rows[1]];
+    		rows2[0].getElementsByTagName("TD")[2].textContent = new Date(rows2[0].getElementsByTagName("TD")[2].textContent); 
+    		//console.log(rows2[0].getElementsByTagName("TD")[2].textContent)
+    		
+    		for( let i=2; i< rows.length-1;i++){
+    			rows2.push(rows[i]);
+    			rows2[i-1].getElementsByTagName("TD")[2].textContent = new Date(rows2[i-1].getElementsByTagName("TD")[2].textContent); 
+  				//console.log(rows[i].getElementsByTagName("TD")[2].textContent);
+    		}	
+    		
+    		//rows2.sort((a,b)=>(b.getElementsByTagName("TD")[2].textContent)-(a.getElementsByTagName("TD")[2].textContent));    		
+    		
+    		//rows2.sort((a,b)=>b.getElementsByTagName("TD")[2].textContent-a.getElementsByTagName("TD")[2].textContent);
+    		for( let i=0; i< rows2.length-1;i++){
+    			
+  				console.log(rows3[i].getElementsByTagName("TD")[2].textContent);
+    		}	
+    		//dateDelv3.sort((a,b)=>b-a);    		    		
+    		
+    		}
+    
+  			
+    </script>
+{% endblock %}

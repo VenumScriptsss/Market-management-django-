@@ -1,0 +1,118 @@
+*{
+    margin:0;
+}
+.main-container{
+    margin:0;
+    height:100vh;
+    width: 100vw;
+    justify-content: middle;
+    position: relative;
+}    
+.cont{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background-color: black;
+    color:white;
+    text-align: center;
+    min-height:60vh;
+    min-width:30vw;
+    border-radius: 10px;
+}
+.sale-id{
+    font-weight: bold;
+    padding:10px 0 10px 0;
+}
+.sale-date{
+    color:#ffa500;
+}
+.sale-prods{
+    padding-top: 2em;
+}
+.prod{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-bottom: .7em;
+    font-weight: bold;
+}
+.icons{
+    position: absolute;
+    right:1em;
+}
+.icons i{
+    margin-right: 1.2em;
+    font-weight: bold;
+    justify-content: right;
+    font-size: 1.1em;
+    cursor: pointer;
+    color:white;
+}
+.prod p{
+    padding-right:.5em;
+}
+.prd-id{
+    color:#ffa500;
+}
+.prd-quant{
+    padding-left:.5em;
+}
+.edit-cont{
+    display: none;
+    padding: 0;
+    color:black;
+    border:2px solid black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-height:70vh;
+    min-width:50vw;
+    transform: translate(-50%,-50%);
+    overflow: auto;
+    background-color: white;
+    text-align: center;
+}
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+.edit-cont[open]{
+    animation-name: fade-in;
+    animation-timing-function: cubic-bezier(.17, .84, .44, 1);
+    animation-duration: .7s;
+}
+.close{
+    opacity: 1;
+    color: white;
+    background-color: black;
+    cursor: pointer;
+    text-align: right;
+    padding-right: .6em;
+    font-size: 1.5em;
+    font-weight: bold;
+    width:100%;
+    margin-bottom:.5em;
+}
+.close:hover{
+    opacity:1;
+    color:white;
+    background-color:black;
+}
+#edit-sale{
+    border:none;
+    background-color:#ffa500;
+    color:black;
+    border-radius: 5px;
+    font-size: .9em;
+    font-weight: bold;
+    margin-top: 5em;
+    padding: 0;
+    width:6em;
+    height:2em;
+}

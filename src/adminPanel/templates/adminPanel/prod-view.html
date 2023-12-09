@@ -1,0 +1,48 @@
+{% load i18n %}
+
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static 'adminPanel/bootstrapicons/bootstrap-icons.css'%}">
+  <link rel="stylesheet" type="text/css" href="{% static 'adminPanel/css/bootstrap.css'%}">
+  <link rel="stylesheet" type="text/css" href="{% static 'adminPanel/stats.css'%}">
+  <title>Analyse Produit</title>
+</head>
+<body>
+  <div class="main-header">
+    <p class="prodname">
+      {{prod.productname}}
+    </p>
+    <p class="prodprice">
+      {{prod.price}}
+    </p>
+  </div>
+  <div class="info">
+    <table class="table table-hover table-striped" id="table">
+    
+      <tbody>
+        <tr>
+          <th scope="row"><p>Prix en Grand:</p></th>
+          <td>{{product.purchasePrx}}( uniter)</td>
+        </tr>
+        <tr>
+          <th scope="row">Unites Vendue(ce mois)</th>
+          <td>{{product.soldUnites}}</td>
+        </tr>
+        <tr>
+          <th scope="row"> Unites Restants</th>
+          <td>{{product.restUnts}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Profit de Produit</th>
+          <td>{{product.profit}}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
+</body>
+</html>

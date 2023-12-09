@@ -1,0 +1,98 @@
+{% load i18n %}
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Statistics</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'adminPanel/bootstrapicons/bootstrap-icons.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'adminPanel/css/bootstrap.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'adminPanel/stats.css'%}">
+</head>
+<body>
+	<div class="top"> 
+		{% if profit  < 0 %}
+		<p style="color:red">Perte: {{profit}}DA</p>
+		{% else%}
+		<p style="color:lime">Profit: {{profit}}DA</p>
+		{%endif%}
+	</div>
+	<div class="main-cont">
+		<div class="outcome">
+			<div class="monthley-loss">
+				<h2 class="">-{{monthLoss}}DA</h2>
+				<h6>Depences de ce mois</h6>	
+			</div>
+			<p style="font-weight: bold;text-align:center;margin-top: 2em;">Produits Expirer:</p>
+			<div class="exp-prods">
+				<div class="prodTitles">
+					<p>Produit</p>
+					<p>Date expirer</p>
+					<p>Uniters expirer</p>
+					<p></p>
+				</div>
+				{% for prod in expProds%}
+				
+					<div class="exp-prd">
+						<p class="prd-exName">{{prod.productname}}</p>
+						<p class="prd-exDate">
+								{{prod.date_ex|date:'m-d-Y'}}
+						</p>
+						<p class="prd-exQnt" style="color:red">{{prod.quantity}} Uniter</p>
+						<button class="btn btn-warning" type="submit" name="statsEditPrx" value={{prd.id}}>Commander</button>
+					</div>
+				{% endfor %}
+			</div>
+
+			<!-- <div class="schd-spends">
+				
+			</div> -->
+		</div>
+
+		<div class="income">
+			<div class="monthley-rev">
+				<h2 class="">+{{monthRev}}DA</h2>
+				<h6>Revenue du ce Mois</h6>
+			</div>
+			<div class="today-rev">
+				<i class="bi bi-arrow-left"></i>
+				<div class="txt">
+					<h3>{{todayRev}}DA</h3>
+					<h6>Revenu D'Aujourdhuit</h6>
+				</div>
+			</div>
+			<p style="font-weight: bold;margin-top: 2em;text-align: center;">Produits plus vendu ce mois:</p>
+			<div class="most-sold">
+				<form action="statistics/view-prod" method="post">{%csrf_token%}	
+					<div class="prodTitles">
+						<p>Produit</p>
+						<p>Prix Unitaire</p>
+						<p>Uniters vendue</p>
+						<p></p>
+					</div>			
+				{% for prd in thisMonth_mostSoldPrds %}
+					<div class="prod">
+						<p class="prd-name">{{prd.productname}}</p>
+						<p class="prd-price">{{prd.price}}DA</p>
+						<p class="prd-saleQnt">{{prd.unitsSold_thisMonth|slice:":-1"}} Uniter</p>
+						<button class="btn btn-warning" type="submit" name="anlysPrd" value={{prd.id}}>Analyser</button>
+					</div>
+
+				{% endfor %}
+				</form>
+			</div>
+			<!-- add redirection to recom page -->
+			<div class="recom">
+				<i class="bi bi-arrow-left"></i>
+				<p>Recomendation</p>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>	
+
+</html>

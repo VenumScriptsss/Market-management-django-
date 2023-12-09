@@ -1,0 +1,96 @@
+{% load static%}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css'%}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+	<!-- font awesome -->
+	
+	<!--<script src="https://use.fontawesome.com/46a40ea73b.js"></script> -->
+	<link rel="stylesheet" href="{% static 'fontawsm/css/all.css' %}">
+	<link rel="stylesheet" href="{% static 'fontawsm/css/fontawesome.css' %}">
+	
+	<title>Home Page</title>
+	
+	<div class="header"><h1>WELCOME</h1></div>
+</head>
+<style>
+*{
+	margin: 0;
+	padding: 0;
+}
+body{
+	margin: 0;
+	padding: 0;
+}
+a{
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+}
+a:hover, a:focus {
+	color: black;
+    text-decoration: none;
+}
+.header h1{
+	padding-top: 20px;
+	color: #ffa500;
+	text-align: center;
+}
+
+.mid-container{
+	display: flex;
+	width: 100%;
+	margin-left: auto;
+	margin-top:  auto;
+	justify-content: center;
+	margin-top: 190px ;
+}
+
+.redirect-cont{
+	padding-top: 40px;
+	background-color: #ffa500;
+	height: 200px;
+	width:  250px;
+	color: black;
+	text-align: center;
+	border-radius: 5px;
+}
+
+.redirect-cont h3{
+	/*padding-top: 95px;*/
+	font-weight: 550;
+	margin-top: 2px;
+}
+.icon img{
+	height: 4rem;
+	width: 4rem;
+	margin-bottom: 20px;
+	/*padding-top: 95px;
+	font-weight: bolder;*/
+}
+
+
+</style>
+
+<body>
+	<div class="mid-container">
+		<a class="redirect-cont" style="margin-right:50px; text-decoration:none;" href="caisse">
+			<div class="icon"><img class="bi" src="/static/bootstrapicons/calculator.svg"></i></div>
+			<div><h3> La Caisse</h3></div>
+		</a>
+		<a class="redirect-cont" style="margin-left:50px" href="login">	
+			<div class="icon"><img src="/static/bootstrapicons/clipboard-data.svg"></img></div>
+			<div ><h3> Admin Panel</h3></div>
+		</a>	
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>	
+</body>
+</html>

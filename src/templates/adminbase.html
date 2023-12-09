@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="{%static'css/bootstrap.min.css'%}">
+	<script type="text/javascript" src=""></script>
+	<!-- font awesome -->
+	
+	<script src="https://use.fontawesome.com/46a40ea73b.js"></script>
+
+
+	<title>
+		{% block title %}
+		{% endblock %}
+	</title>
+	<div class="admin-base-header">
+		{% block backicon%}
+		{% endblock%}
+		<p style="justify-content: center;color:black;">
+			{% block panelname %}
+			{% endblock %}
+		</p>
+		<a class="logout" href="logout" style="justify-content:right"><button class="btn btn-dark">Logout</button></a>		
+	</div>
+</head>
+
+<style>
+	.logout button{
+		background-color: black;
+		color: #ffa500;
+	}
+	.logout button :hover{
+	}
+	.bi{
+		color: black;
+		font-size: 1.5rem;
+	}
+	.backicon{
+		margin-top: -2px;
+	}
+	.admin-base-header{
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		height: 50px;
+		background-color: #ffa500;
+		padding-top: 10px;
+		font-weight: bold;
+	}
+	.admin-base-header button{
+		margin-top:-5px;
+		justify-content: right;
+	}
+	.admin-base-header p{
+		justify-content: center;
+	}
+	
+	{% block style %}
+	{% endblock %}
+</style>
+
+<body>
+	{% block content %}
+	{% endblock %}
+
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>	
+</body>
+</html>

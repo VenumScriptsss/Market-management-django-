@@ -1,0 +1,512 @@
+{% load i18n %}
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css'%}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+	<!-- font awesome -->
+
+	<!--<script src="https://use.fontawesome.com/46a40ea73b.js"></script> -->
+	<link rel="stylesheet" href="{% static 'fontawsm/css/all.css' %}">
+	<link rel="stylesheet" href="{% static 'fontawsm/css/fontawesome.css' %}">
+
+
+	<title>
+		Caisse
+	</title>
+	<div class="header">
+		<a href=".." class="backicon"><img class="bi bi-arrow-left-circle-fill"
+				src="/static/bootstrapicons/arrow-left-circle-fill.svg"></img>
+		</a>
+		<p style="text-align:center;">Caisse</p>
+		<button id="hstr_btn" class="btn btn-dark" onclick="history()">Historique</button>
+	</div>
+</head>
+<style>
+	.backicon img {
+		margin-top: -2px;
+		margin-left: 5px;
+		height: 1.5rem;
+		width: 1.5rem;
+	}
+
+	.bi {
+		color: black;
+		font-size: 1.5rem;
+	}
+
+	.btn-dark {
+		background: black;
+		font-weight: bold;
+		font-size: .9em;
+		margin-bottom: auto;
+		margin-right: 4px;
+		width: 97px
+	}
+
+	.header {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		height: 50px;
+		background-color: #ffa500;
+		padding-top: 10px;
+		font-weight: bold;
+		margin-bottom: 40px;
+	}
+
+	.header button {
+		margin-top: -5px;
+		justify-content: right;
+	}
+
+	.header p {
+		color: black;
+	}
+
+	.sale-details {
+		text-align: center;
+		margin-top: 5em;
+	}
+
+	.products {
+		font-weight: bold;
+		font-size: 1.2em;
+	}
+
+	.container {
+		display: flex;
+		margin: 0;
+		padding: 0;
+		min-width: 100vw;
+	}
+
+	.caisse-cont {
+		width: 100vw;
+		height: 100vh;
+	}
+
+	#history {
+		width: 0;
+		height: auto;
+		align-items: center;
+		text-align: center;
+		justify-content: center;
+	}
+
+	.total-price {
+		justify-content: center;
+		display: flex;
+	}
+
+	.total-price p {
+		font-weight: bold;
+		font-size: 3em;
+		margin: 0;
+		padding: 0;
+	}
+
+	.modal {
+		border: none;
+		display: none;
+		/* Hidden by default */
+		position: fixed;
+		/* Stay in place */
+		z-index: 1;
+		/* Sit on top */
+		width: 70%;
+		/* Full width */
+		height: 70%;
+		/* Full height */
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		overflow: auto;
+		/* Enable scroll if needed */
+		background-color: rgredba(0, 0, 0, 0.4);
+		/* Black w/ opacity */
+
+	}
+
+	@keyframes fade-in {
+		0% {
+			opacity: 0;
+		}
+
+		100% {
+			opacity: 1;
+		}
+	}
+
+	.modal[open] {
+		animation-name: fade-in;
+		animation-timing-function: cubic-bezier(.17, .84, .44, 1);
+		animation-duration: .7s;
+	}
+
+	.table {
+		background: black;
+	}
+
+	.close {
+		opacity: 1;
+		color: white;
+		background-color: black;
+		cursor: pointer;
+		text-align: right;
+		padding-right: .6em;
+	}
+
+	.close:hover {
+		opacity: 1;
+		color: white;
+		background-color: black;
+	}
+
+	.enc {
+		background-color: #ffa500;
+		font-size: 1em;
+	}
+
+
+	.prod {
+		display: flex;
+		justify-content: center;
+		text-align: center;
+		margin-bottom: .7em;
+		border-bottom: 1.5px solid #ffa500;
+	}
+
+	.prod-det {
+		margin-left: 50%;
+		transform: translate(-50%);
+
+	}
+
+	.icons img {
+		margin-right: 9px;
+		font-size: 10px;
+		font-weight: bold;
+		justify-content: right;
+		height: 1.8em;
+		width: 1.8em;
+		cursor: pointer;
+	}
+
+	.icons {
+		margin: 0 9em 0 auto;
+		display: flex;
+		padding-top: 2px;
+	}
+
+	#add_product {
+		margin-top: .7em;
+	}
+	.sale{
+		opacity: 0;
+		border-bottom:1px solid black;
+		padding:10px;
+	}
+	.sale-header{
+		display: flex;
+		margin-bottom: 0;
+		justify-content: center;
+	}
+	.sale-id{
+		margin-right:auto;
+	}
+	.sale-date{
+		margin-right: auto;
+		font-weight: bold;
+	}
+
+</style>
+
+<div class="container">
+	<div class="caisse-cont">
+		<div class="total-price">
+			<p style="color:#ffa500;"> Total: </p>
+			<p id="total">0</p>
+			<p style="font-weight: normal;">DA</p>
+		</div>
+		<div class="sale-details">
+			<div class="products" id="products">
+
+			</div>
+			<button class="btn btn-dark" id='add_product' onclick="runModal()"> Ajouter </button>
+		</div>
+		<dialog id="myModal" class="modal" open="">
+
+			<div class="modal-content">
+				<span class="close">x</span>
+				<table class="table table-borderless table-hover table-dark" id="table">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">produit</th>
+							<th scope="col">prix</th>
+						</tr>
+					</thead>
+					{% for product in products %}
+
+					<tbody>
+						<tr>
+							<th scope="row">
+								<p id="prod-id">{{product.id}}</p>
+							</th>
+							<td>{{product.productname}}</td>
+
+							<td>
+								{% if product.price == -1 or product.price == 0 %}
+								Prix Non Saiser
+								{% elif product.sold %}
+								{% for sold in solds %}
+								{% if sold.sold_productid == product.id %}
+								<p>{{product.price}}DA ({{sold.sold_price}}DA prix sold)</p>
+								{% endif %}
+								{% endfor %}
+								{% else %}
+								<p>{{product.price}}DA</p>
+								{% endif %}
+							</td>
+
+							<td>
+								<button class="btn btn-warning" id={{product.price}}
+									name={{product.productname}},{{product.id}} onclick="add_prod(this.name,this.id)">
+									Ajouter</button>
+							</td>
+
+						</tr>
+
+					</tbody>
+
+					{% endfor %}
+				</table>
+			</div>
+		</dialog>
+		<div class="text-center" style="margin-top:5em">
+			<form method="post" id="prod_form">
+				{% csrf_token %}
+				<button class="enc btn" id="enc_btn" type="submit" name="encaissement">Encaisser</button>
+			</form>
+
+		</div>
+	</div>
+	<div id="history">
+		{% for sale in lastsales%}
+		<!-- childNodes sensetive, verify js after any change -->
+			<div id={{sale.id}} class="sale" onclick="openSale(this.id)">
+				<div class="sale-header">
+					<p class="sale-id">#{{sale.id}}</p>
+					
+					<p class="sale-date">
+						{% language 'fr' %}
+						{{sale.saleDate | date}}
+						{% endlanguage %}
+					</p>
+					
+					<!--#{{sale.id}} {{sale.saleDate}}-->
+				</div>
+				{% for prod in sale.saleProducts.all|slice:":3" %}
+					<div class="prods">{{prod}}</div>
+				{% endfor %}
+			<form action="sale-details" method="post" target="_blank" hidden>
+				{% csrf_token %} 
+				<input hidden type="text" name="saleId" value={{sale.id}} >
+				<button id=btn{{sale.id}} name=sale-det hidden type="submit" ></button>
+			</form>
+		</div>
+		{% endfor %}
+		
+	</div>
+
+
+</div>
+<script>
+	window.onload = function () {
+		prodsClass = document.getElementsByClassName("products");
+	};
+	//prodsClass[i].textContent
+
+	function runModal() {
+		mainCont = document.getElementsByClassName("container");
+		modal = document.getElementById("myModal");
+		colsebtn = document.getElementsByClassName("close")[0];
+		modal.style.display = "block";
+
+
+		colsebtn.onclick = function () {
+			modal.style.display = "none";
+		}
+
+	};
+	function add_prod(name_id, prodprice) {
+		array = name_id.split(",");
+		prodname = array[0];
+		prodid = array[1];
+
+		cur_total = document.getElementById("total").textContent;
+		cur_total = parseInt(cur_total);
+		prodprice = parseInt(prodprice);
+		total = cur_total + prodprice;
+		document.getElementById("total").textContent= total;
+
+		modal = document.getElementById("myModal");
+		modal.style.display = "none";
+		//prod = document.getElementById(prodname);
+		//prod.style.display = "block";
+		if(!!document.getElementById(prodid)){
+			currProdQnt = document.getElementById("prod"+prodid+"qnt").childNodes[0].nodeValue;
+			
+			if(currProdQnt===""){
+				document.getElementById("prod"+prodid+"qnt").childNodes[0].nodeValue = "x2";
+				qntform=document.getElementById(prodid+"form")/*.value=2*/;
+				console.log(qntform);
+			}
+			else{
+				currProdQnt=currProdQnt.split("x")[1];
+				document.getElementById("prod"+prodid+"qnt").childNodes[0].nodeValue = "x"+(parseInt(currProdQnt)+1);
+				document.getElementById(prodId+"form").value=(parseInt(currProdQnt)+1);
+			}
+			
+		}
+		else{
+			console.log("no there isn't");
+		
+			dprod = document.createElement("div");
+			dprod.classList.add("prod");
+			/*pId = document.createElement("p");
+			pIdtxtnode = document.createTextNode(prodid);
+			pId.setAttribute*/
+			const pprod = document.createElement("p");
+			const proddetail = document.createTextNode(prodname + " " + prodprice + "DA");
+			pprod.setAttribute("class", "prod-det");
+			pprod.setAttribute("id", prodid);
+
+			prdQuantity = document.createElement("p");
+			prdQuantitytxt = document.createTextNode("");
+			prdQuantity.className += "prodQnt";
+			prdQuantity.setAttribute("id","prod"+prodid+"qnt")
+
+			pprod.appendChild(proddetail);
+			prdQuantity.appendChild(prdQuantitytxt);
+
+			iconsDiv = document.createElement("div")
+			iconsDiv.classList.add("icons");
+			plusIcn = document.createElement("img");
+			plusIcn.src = "/static/bootstrapicons/plus-circle-fill.svg";
+			plusIcn.setAttribute("class", "bi bi-plus-circle");
+			minusIcn = document.createElement("img");
+			minusIcn.src = "/static/bootstrapicons/dash-circle-fill.svg";
+			minusIcn.setAttribute("class", "bi bi-dash-circle");
+
+			dprod.appendChild(pprod);
+			dprod.appendChild(prdQuantity);
+
+			iconsDiv.appendChild(plusIcn);
+			iconsDiv.appendChild(minusIcn);
+			dprod.appendChild(iconsDiv);
+			const element = document.getElementById("products");
+			element.appendChild(dprod);
+		}
+		plusIcn.onclick = function () {
+			frmId = this.parentElement.parentElement.childNodes[0].id;
+			frm = document.getElementById(frmId+"form");
+			if (this.parentElement.parentElement.childNodes[1].childNodes[0].nodeValue === "") {
+				this.parentElement.parentElement.childNodes[1].childNodes[0].nodeValue = "x2";
+				frm.value=2;
+			} else {
+				qnt = this.parentElement.parentElement.childNodes[1].childNodes[0].nodeValue;
+				qntStr = qnt.slice(1);
+				qntNum = parseInt(qntStr);
+				this.parentElement.parentElement.childNodes[1].childNodes[0].nodeValue = "x" + (qntNum + 1);
+				frm.value=qntNum+1;
+			}
+		}
+
+
+
+		minusIcn.onclick = function () {
+			frmId = this.parentElement.parentElement.childNodes[0].id;
+			frm=document.getElementById(frmId+"form");
+
+			if (this.parentElement.parentElement.childNodes[1].childNodes[0].nodeValue === "") {
+				if (confirm("Voullez vous vraiment supprimer ce produit ?") == true) {
+					cur_total = document.getElementById("total").textContent;
+					cur_total = parseInt(cur_total);
+					prodPrice=this.parentElement.parentElement.childNodes[0].textContent;
+					prodPrice = prodPrice.split(" ");
+					prodPrice = prodPrice[1].split("DA");
+					document.getElementById("total").textContent = (cur_total-parseInt(prodPrice[0]));
+					//cur_total.textContent = total;
+					this.parentElement.parentElement.remove();
+					frm.remove();
+				}
+			} else {
+				qnt = this.parentElement.parentElement.childNodes[1].childNodes[0].nodeValue;
+				qntStr = qnt.slice(1);
+				qntNum = parseInt(qntStr);
+				if (qntNum === 2) {
+					frm.value=1;
+					return this.parentElement.parentElement.childNodes[1].childNodes[0].nodeValue = "";
+				}
+				this.parentElement.parentElement.childNodes[1].childNodes[0].nodeValue = "x" + (qntNum - 1);
+				frm.value=qntNum-1;
+			}
+		}
+
+		prodform = document.getElementById("prod_form");
+		form = document.createElement("input");
+		//value contains the quantity of the prod
+		form.setAttribute("value", "1");
+		form.setAttribute("name", prodid);
+		form.setAttribute("id",prodid+"form");
+		form.style.display = "none";
+		prodform.appendChild(form);
+
+	};
+
+	function history() {
+		button = document.getElementById("hstr_btn");
+		historyBar = document.getElementById("history");
+		content = document.getElementsByClassName("sale");
+		if (button.innerText === "Historique") {
+			historyBar.style.width = "22vw";
+			historyBar.style.transition = "1s";
+			historyBar.style.borderLeft = "1px solid #ffa500";
+			button.innerText = ">>";
+
+			for (let i = 0; i < content.length; i++) {
+  				content[i].style.opacity = "1";
+  				content[i].style.transition = "2s";
+			}
+			
+
+		}
+		else {
+			historyBar.style.width = "0";
+			historyBar.style.transition = "1s";
+			button.innerText = "Historique";
+			historyBar.style.borderLeft = "none";
+			for (let i = 0; i < content.length; i++) {
+  				content[i].style.opacity = "0";
+  				content[i].style.transition = ".5s";
+			}
+		}
+	};
+	function openSale(self){
+		btn = document.getElementById("btn"+self);
+		btn.click();
+	};
+</script>
+
+</html>

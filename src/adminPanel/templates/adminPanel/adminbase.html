@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="{% static 'adminPanel/css/bootstrap.css'%}">
+	<link rel="stylesheet" href="{% static 'adminPanel/css/bootstrap.min.css'%}">
+	<script type="text/javascript" src="{% static 'adminPanel/js/bootstrap.min.js' %}"></script>
+	<!-- font awesome -->
+	
+	<!--<script src="https://use.fontawesome.com/46a40ea73b.js"></script> -->
+	<link rel="stylesheet" href="{% static 'adminPanel/fontawsm/css/all.css' %}">
+	<link rel="stylesheet" href="{% static 'adminPanel/fontawsm/css/fontawesome.css' %}">
+	
+
+
+	<title>
+		{% block title %}
+		{% endblock %}
+	</title>
+	<div class="admin-base-header">
+		{% block backicon%}
+		{% endblock%}
+		<p style="justify-content: center;color:black;">
+			{% block panelName%}
+			{% endblock %}
+		</p>
+		<a class="logout" href="logout" style="justify-content:right"><button class="btn btn-dark">Logout</button></a>		
+	</div>
+</head>
+
+<style>
+	.logout button{
+		background-color: black;
+		color: #ffa500;
+	}
+	.logout button :hover{
+	}
+	.bi{
+		color: black;
+		height: 48;
+		width: 48;
+	}
+	.backicon img{
+		margin-top: -2px;
+		margin-left: 5px;
+		height: 1.5rem;
+		width: 1.5rem;
+	}
+	.admin-base-header{
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		height: 50px;
+		background-color: #ffa500;
+		padding-top: 10px;
+		font-weight: bold;
+	}
+	.admin-base-header button{
+		margin-top:-5px;
+		justify-content: right;
+	}
+	.admin-base-header p{
+		justify-content: center;
+	}
+
+	{% block style %}
+	{% endblock %}
+</style>
+
+<body>
+	{% block content %}
+	{% endblock %}
+
+
+		
+</body>
+</html>

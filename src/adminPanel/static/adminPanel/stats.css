@@ -1,0 +1,169 @@
+*{
+    margin:0;
+    padding:0;
+}
+body{
+    max-width: 100%;
+    overflow-x: hidden;
+
+}
+.main-cont{
+    display:flex;
+    width:100vw;
+}
+.top{
+    margin-bottom:2em;
+    text-align:center;
+    font-weight: bold;
+    font-size: 2em;
+}
+.income{
+
+    width:50vw;
+    height:100vh;
+/*     background:blue;
+ */
+    border-left:1.5px solid #ffa500
+}
+.monthley-rev{
+    text-align: center;
+    margin-right:10px;
+    color:lime;
+    font-weight:bold;
+    font-size: 1.2em;
+    margin-bottom:3em;
+}
+.monthley-rev h2{
+    margin-bottom:0;
+}
+.today-rev{
+    width: fit-content;
+    display:flex;
+    justify-content: right;
+    margin-right:1em;
+    margin-left:auto;
+    color:lime;
+    font-weight:bold;
+    font-size: 1.2em;
+    border-bottom: 2px solid black;
+}
+.today-rev i{
+    margin-right:.7em;
+    font-size:1.5em;
+    color:black;
+}
+.txt h3{
+    text-align:right;
+    margin-right:.4em;
+    margin-bottom:0;
+}
+.today-rev h6{
+    margin:0;
+    color:black;
+
+}
+
+.outcome{
+    width:50vw;
+    height:100vh;
+/*     background:red;
+ */}
+.most-sold{
+    margin-top: 1.2em;
+    margin-left:auto;
+    margin-right:auto;
+    border-bottom: 1.7px solid #ffa500;
+    width:90%;
+    padding:.5em;
+}
+.prodTitles{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1.7px solid #ffa500;
+    font-weight: bold;
+}
+.prodTitles p{
+    padding:0 0 10px 5px;
+    margin:0;
+}
+.prod{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    display:flex;
+    justify-content:space-between;
+}
+.prod:hover{
+    background-color: #f2f2f2;
+    cursor: e-resize;
+}
+.prd-name{
+    margin-right:2em;
+}
+.prd-price{
+    color:lime;
+    margin-right:2em;
+}
+.btn{
+    padding:3px;
+    padding-bottom:1px;
+    width:auto;
+    margin-right:.2em;
+    height:1.9em;
+}
+.recom{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    width:15em;
+    height:5.6em;
+    border:1px solid black;
+    border-radius: 5px;
+    margin-top: 2em;
+    margin-left:50%;
+    transform: translate(-50%);
+    margin-bottom: 2em;
+}
+.recom p{
+    padding:0;
+    margin:0;
+    font-weight:bold;
+}
+.recom i{
+    margin-right:.5em;
+    font-weight: bolder;
+    font-size:1.3em;
+    cursor:pointer;
+}
+.monthley-loss{
+    text-align:center;
+    color:red;
+}
+.exp-prods{
+    padding:10px;
+    width:90%;
+    margin-left:auto;
+    margin-right:auto;
+    border-bottom: 1px solid #ffa500;
+}
+.exp-prd:hover{
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+.table-content{
+    max-height: 100px;
+    background:blue;
+}
+.table{
+    overflow-y:auto;
+    max-height: 100px;
+}
+.exp-prd{
+    padding:5px;
+    display:flex;
+    justify-content: space-between;
+/*     border-bottom:1px solid black;
+ */}
+.exp-prod :hover{
+    
+}

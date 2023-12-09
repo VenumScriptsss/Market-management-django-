@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solder</title>
+    
+    <link rel="stylesheet" href="{% static 'adminPanel/css/bootstrap.css'%}">
+    <link rel="stylesheet" href="{% static 'adminPanel/css/bootstrap.min.css'%}">
+    <script type="text/javascript" src="{% static 'adminPanel/js/bootstrap.min.js' %}"></script>
+    <!-- font awesome -->
+    
+    <!--<script src="https://use.fontawesome.com/46a40ea73b.js"></script> -->
+    <link rel="stylesheet" href="{% static 'adminPanel/fontawsm/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'adminPanel/fontawsm/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<style>
+body{
+    background-color: #27DB39;
+}
+
+.registration-form{
+    padding: 50px 0;
+}
+
+.registration-form form{
+    background-color: #fff;
+    max-width: 600px;
+    margin: auto;
+    padding: 50px 70px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+}
+
+
+
+.registration-form .item{
+    border-radius: 20px;
+    margin-bottom: 25px;
+    padding: 10px 20px;
+}
+.header{
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+.sub-header{
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 50px;
+
+}
+.backicon i{
+    color: white;
+    font-size: 1.2rem;
+    margin-left: 50px;
+}
+
+
+
+</style>
+<body>
+    <div class="registration-form">
+        <div>
+              <a  href="/admin-panel/prix" class="backicon"><i class="fas fa-arrow-left"> Retour</i> </a>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="header"><h3>Solder Produit:</h3></div>
+            <div class="sub-header"><h6>({{product.productname}},prix:{{product.price}}DA)</h6></div>
+            
+            <div class="form-group">
+                <input type="text" name="sold-price" maxlength="50" id="id_suplier" placeholder="Prix de Sold" class="form-control item" onfocus="(this.type='number')">
+            </div>
+            
+            <div class="form-group">
+                <input type="text" name="start-sold" required="" id="id_quantity" placeholder="Date debut de Sold" class="form-control item" onfocus="(this.type='date')" min="{{todaDate}}">
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="end-sold" required="" id="id_quantity" placeholder="Date fin de Sold" class="form-control item" onfocus="(this.type='date')" min="{{todayDate}}">
+            </div>
+           
+           
+                <input type="number" name="product-id" value="{{product.id}}" hidden="" id="id_suplier">
+            
+
+            {% for field in form %}
+
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+            
+            <div class="text-center">
+                <button type="submit" name="add-sold" class="btn btn-success">Confirmer Sold</button>
+            </div> 
+        </form>
+        
+    </div>
+
+</body>
+</html>
+

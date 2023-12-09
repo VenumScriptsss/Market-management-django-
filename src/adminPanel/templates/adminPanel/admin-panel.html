@@ -1,0 +1,70 @@
+{% extends 'adminPanel/adminbase.html' %}
+
+{% block style %}
+		
+		.container{
+			display: grid;
+			width: 100%;
+			justify-content: center;
+			margin-top: 100px;
+			text-decoration: none;
+		}
+		.divs{
+			justify-content: center;			
+			text-decoration: none;
+			display: block;
+			width: 80vw;
+			height: 80px;
+			background-color: #ffa500;
+			margin-bottom: 10px;
+			text-align: center;
+			color: black;
+			padding:0;
+		}
+		.divs h3{
+			padding: 23px 0 0 0;
+			margin:0;
+			font-weight:bold;
+		}
+		.container a:hover {
+			color: white;
+		    text-decoration: none;
+		    background-color: black;
+		    transition: 0.5s;
+		}
+		.fas{
+			font-size:1.7rem;
+		}
+
+		
+{% endblock %}
+
+{% block title %}
+	Admin Panel	
+{% endblock %}
+
+{% block content%}
+	<div class="container">
+		<div class="headers">
+			<a href="admin-panel/stock" class="divs" >
+				<div>
+					<h3>Stock <i class="fas fa-clipboard-list"></i></h3>
+				</div>
+			</a>			
+		</div>
+		<div class="headers">
+			<a href="admin-panel/prix" class="divs">
+				<div>
+					<h3>Prix <i class="fas fa-search-dollar"></i></h3>
+				</div>
+			</a>
+		</div>
+		<div class="headers">
+			<a href="admin-panel/statistics" class="divs">
+				<div>
+					<h3>Statistics <i class="fas fa-chart-line"></i></h3>
+				</div>
+			</a>
+		</div>
+	</div>
+{% endblock %}	
